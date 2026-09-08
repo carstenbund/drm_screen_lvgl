@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "drm-screen-lvgl"
+version = "0.1.0"
+description = "LVGL renderer plugin for drm_screen: dirty-area compositing and vector scene layers, presented straight to DRM/KMS"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-or-later"
+authors = [{ name = "Carsten Bund", email = "carstenbund@gmail.com" }]
+dependencies = []
+keywords = ["drm", "kms", "lvgl", "vector", "compositor", "embedded", "esp32", "raspberry-pi"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Graphics",
+]
+
+# Installing this package is the whole of the selection: drm_screen finds it
+# here and offers it as "lvgl". Nothing in drm_screen imports it by name.
+[project.entry-points."drm_screen.renderers"]
+lvgl = "drm_screen_lvgl:LvglRenderer"
+
+[project.optional-dependencies]
+numpy = ["numpy"]
+
+[project.urls]
+Homepage = "https://github.com/carstenbund/drm_screen_lvgl"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["drm_screen_lvgl*"]
