@@ -126,6 +126,8 @@ class LvglRenderer:
                         getattr(command, "x", 0), getattr(command, "y", 0))
         elif kind == "PlaceScene":
             screen.set_scene(command.name, command.scene)
+        elif kind == "SetSceneOffset":
+            screen.set_scene_offset(command.name, command.offset)
         elif kind == "StartRipple":
             screen.add_ripple(command.name, command.origin, getattr(command, "start", 0.0),
                               getattr(command, "amplitude", 6.0),

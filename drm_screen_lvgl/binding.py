@@ -104,6 +104,8 @@ def _load():
     lib.mm_screen_layer_blit.restype = c_int
     lib.mm_screen_layer_scene.argtypes = [c_void_p, c_char_p, c_char_p]
     lib.mm_screen_layer_scene.restype = c_int
+    lib.mm_screen_layer_offset.argtypes = [c_void_p, c_char_p, c_double]
+    lib.mm_screen_layer_offset.restype = c_int
     lib.mm_screen_layer_ripple.argtypes = [c_void_p, c_char_p] + [c_double] * 7
     lib.mm_screen_layer_ripple.restype = c_int
     lib.mm_screen_hit_test.argtypes = [c_void_p, c_int, c_int]
@@ -168,7 +170,7 @@ class LvglScreen:
         ))
         self.layers[name] = dict(name=name, width=width, height=height, x=x, y=y, z=z,
                                  visible=visible, opacity=opacity, interactive=interactive,
-                                 hit_id=hit_id, scene=False)
+                                 hit_id=hit_id, scene=False, offset=0.0)
 
     def delete_layer(self, name) -> None:
         self._check(self._lib.mm_screen_layer_delete(self._handle, _encode(name)))
@@ -217,6 +219,18 @@ class LvglScreen:
                                                     _encode(scene)))
         if name in self.layers:
             self.layers[name]["scene"] = scene is not None
+
+    def set_scene_offset(self, name, offset_ms) -> None:
+        """Shift one layer's own clock against the screen's.
+
+        The screen is rendered at a single time; a layer with an offset is
+        evaluated at `scene_time - offset`. That is how units standing on one
+        wall start one after another, or hold different moments of the same
+        scene, without anything being rendered twice."""
+        self._check(self._lib.mm_screen_layer_offset(self._handle, _encode(name),
+                                                     float(offset_ms)))
+        if name in self.layers:
+            self.layers[name]["offset"] = float(offset_ms)
 
     def add_ripple(self, name, origin, start=0.0, amplitude=6.0, wavelength=120.0,
                    speed=0.35, life_ms=1400.0, width=260.0) -> None:
