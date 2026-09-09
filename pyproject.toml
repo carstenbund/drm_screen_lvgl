@@ -9,6 +9,7 @@ description = "LVGL renderer plugin for drm_screen: dirty-area compositing and v
 readme = "README.md"
 requires-python = ">=3.10"
 license = "GPL-3.0-or-later"
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]
 authors = [{ name = "Carsten Bund", email = "carstenbund@gmail.com" }]
 dependencies = []
 keywords = ["drm", "kms", "lvgl", "vector", "compositor", "embedded", "esp32", "raspberry-pi"]
@@ -17,7 +18,11 @@ classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Multimedia :: Graphics",
+    "Topic :: System :: Hardware",
 ]
 
 # Installing this package is the whole of the selection: drm_screen finds it
@@ -30,6 +35,8 @@ numpy = ["numpy"]
 
 [project.urls]
 Homepage = "https://github.com/carstenbund/drm_screen_lvgl"
+Repository = "https://github.com/carstenbund/drm_screen_lvgl"
+"Bug Tracker" = "https://github.com/carstenbund/drm_screen_lvgl/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

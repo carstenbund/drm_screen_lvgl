@@ -22,11 +22,29 @@ Same commands, same layers, same service. Two things change:
 Where LVGL is not available, `drm_screen` keeps composing with numpy. That is
 the point of it being a plugin.
 
+## Part of the drm_stack
+
+Each package installs and runs on its own:
+
+| Package | Role |
+|---|---|
+| [`drm-composer`](https://github.com/carstenbund/drm_composer) | screen-HTML → layer commands |
+| [`drm-screen`](https://github.com/carstenbund/drm_screen) | layers → composited frame |
+| **`drm-screen-lvgl`** | layers → LVGL → DRM/KMS, and scene layers · *this package* |
+| [`drm-display`](https://github.com/carstenbund/drm_display) | frame → DRM/KMS pixels |
+
+Full stack and integration demo:
+[`drm_stack`](https://github.com/carstenbund/drm_stack) (Stage 4b).
+
 ## Install
 
 ```bash
 pip install drm-screen-lvgl
 ```
+
+No Python dependencies. It needs the native library described below, and
+`drm_screen_lvgl.is_available()` says whether one was found — so an application
+can fall back to the RGBA compositor rather than fail.
 
 Installing it *is* the selection — `drm_screen` discovers it through the
 `drm_screen.renderers` entry point:
