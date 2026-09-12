@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "drm-screen-lvgl"
-version = "0.1.0"
+version = "0.1.1"
 description = "LVGL renderer plugin for drm_screen: dirty-area compositing and vector scene layers, presented straight to DRM/KMS"
 readme = "README.md"
 requires-python = ">=3.10"
