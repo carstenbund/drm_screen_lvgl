@@ -4,13 +4,19 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "drm-screen-lvgl"
-version = "0.1.1"
+version = "0.1.2"
 description = "LVGL renderer plugin for drm_screen: dirty-area compositing and vector scene layers, presented straight to DRM/KMS"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]
-authors = [{ name = "Carsten Bund", email = "carstenbund@gmail.com" }]
+# Split deliberately: setuptools maps a {name, email} pair to Author-email
+# alone and leaves the legacy Author header unset, so anything reading
+# Author (pypistats, some mirrors) reports "None".  Two entries fill both.
+authors = [
+    { name = "Carsten Bund" },
+    { email = "carstenbund@gmail.com" },
+]
 dependencies = []
 keywords = ["drm", "kms", "lvgl", "vector", "compositor", "embedded", "esp32", "raspberry-pi"]
 classifiers = [

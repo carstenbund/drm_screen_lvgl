@@ -95,6 +95,16 @@ against a clock. `PlaceScene(name, scene)` hands one to a layer;
 `StartRipple(name, origin=…)` disturbs it locally, for a finger on the glass.
 See [`docs/scene-layers.md`](https://github.com/carstenbund/drm_screen_lvgl/blob/main/docs/scene-layers.md).
 
+## Changes
+
+```
+0.1.2   Packaging: the Author header was empty -- a {name, email} author maps
+        to Author-email alone -- so PyPI showed no author.  A README link was
+        repo-relative and 404s on PyPI.
+0.1.1   first published release -- the LVGL renderer plugin: dirty-area
+        compositing, vector scene layers, presented straight to DRM/KMS
+```
+
 ## License
 
 **GPL-3.0-or-later**, matching `drm_screen`. For proprietary use that cannot
