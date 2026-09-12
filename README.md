@@ -93,7 +93,7 @@ can fall back rather than fail.
 A scene is a document, not a picture: objects, paths, and animations evaluated
 against a clock. `PlaceScene(name, scene)` hands one to a layer;
 `StartRipple(name, origin=…)` disturbs it locally, for a finger on the glass.
-See [`docs/scene-layers.md`](docs/scene-layers.md).
+See [`docs/scene-layers.md`](https://github.com/carstenbund/drm_screen_lvgl/blob/main/docs/scene-layers.md).
 
 ## License
 
