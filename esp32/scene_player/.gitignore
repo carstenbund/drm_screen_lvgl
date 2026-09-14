@@ -1,0 +1,17 @@
+# What link.sh makes, named one by one: a *.h glob would also hide lv_conf.h
+# and the headers that belong here.
+cJSON.c
+cJSON.h
+easing.c
+easing.h
+evaluator.c
+evaluator.h
+geometry.c
+geometry.h
+render_lvgl.c
+render_lvgl.h
+ripple.c
+ripple.h
+scene_json.c
+scene_json.h
+scene_model.h

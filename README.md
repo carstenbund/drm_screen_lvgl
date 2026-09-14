@@ -95,6 +95,13 @@ against a clock. `PlaceScene(name, scene)` hands one to a layer;
 `StartRipple(name, origin=…)` disturbs it locally, for a finger on the glass.
 See [`docs/scene-layers.md`](https://github.com/carstenbund/drm_screen_lvgl/blob/main/docs/scene-layers.md).
 
+## On an ESP32
+
+[`esp32/`](https://github.com/carstenbund/drm_screen_lvgl/blob/main/esp32/README.md)
+draws the same scene documents on an ESP32 panel: an Arduino sketch, a C
+bridge between the player, LVGL and the panel driver, and one header per
+board. Not part of the Python package.
+
 ## Changes
 
 ```

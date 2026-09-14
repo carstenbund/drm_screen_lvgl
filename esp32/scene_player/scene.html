@@ -1,0 +1,16 @@
+<!-- The sketch's default scene. After editing:  python embed_scene.py scene.html
+     Coordinates are this design size; the player fits it to any panel. -->
+<screen width="320" height="480">
+  <layer id="bg" z="0">
+    <box x="0" y="0" w="320" h="480" color="#101014" />
+  </layer>
+  <layer id="label" z="10">
+    <box x="20" y="180" w="280" h="64" color="#1e2a3a" />
+    <text x="36" y="198" size="24" color="#e8e8f0">drm_scene_ir</text>
+  </layer>
+  <layer id="ink" z="20">
+    <path id="rule" d="M 20 280 L 300 280" stroke="#e8e8f0" stroke-width="4" progress="0">
+      <animate property="progress" from="0" to="1" start="0" duration="3000" />
+    </path>
+  </layer>
+</screen>
