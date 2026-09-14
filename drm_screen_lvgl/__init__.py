@@ -33,4 +33,10 @@ from drm_screen_lvgl.binding import LvglError, LvglScreen, is_available, library
 from drm_screen_lvgl.renderer import LvglRenderer
 
 __all__ = ["LvglRenderer", "LvglScreen", "LvglError", "is_available", "library_path"]
-__version__ = "0.1.0"
+
+from importlib.metadata import PackageNotFoundError, version
+
+try:
+    __version__ = version("drm-screen-lvgl")
+except PackageNotFoundError:
+    __version__ = "unknown"

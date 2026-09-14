@@ -105,6 +105,11 @@ board. Not part of the Python package.
 ## Changes
 
 ```
+0.1.3   Documentation, and one fix.  The README points at esp32/, which draws
+        the same scene documents on an ESP32 panel -- a sketch, a C bridge and
+        a header per board -- and is not part of the Python package.
+        __version__ read 0.1.0 whatever was installed; it now comes from the
+        package metadata.
 0.1.2   Packaging: the Author header was empty -- a {name, email} author maps
         to Author-email alone -- so PyPI showed no author.  A README link was
         repo-relative and 404s on PyPI.
