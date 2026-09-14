@@ -25,8 +25,17 @@ extern "C" {
 bool panel_begin(void);
 
 /** Parse a scene document, once. On refusal nothing is drawn until a scene
- *  loads, and panel_error() says why. */
+ *  loads, and panel_error() says why.
+ *
+ *  Its pictures are checked on the SD card at S:/assets/<src>.bin against the
+ *  size and CRC32 the composer wrote. A missing or mismatched picture does not
+ *  refuse the scene: it is left out, panel_missing_assets() counts it and
+ *  panel_error() names the first. */
 bool panel_load_scene(const char *scene_json);
+
+/** Pictures of the loaded scene that are not drawn: missing, or a file from
+ *  another build. */
+int panel_missing_assets(void);
 
 /** Draw the scene as it is at `scene_time_ms`. Skipped when that frame is
  *  already on the glass, or when the scene has finished moving. For a clock

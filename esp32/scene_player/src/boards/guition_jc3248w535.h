@@ -36,6 +36,8 @@
 #define MM_BOARD_GUITION_JC3248W535_H
 
 #include <Arduino_GFX_Library.h>
+#include <SD.h>
+#include <SPI.h>
 
 #define PIN_LCD_CS        45
 #define PIN_LCD_SCK       47
@@ -64,6 +66,20 @@ static inline Arduino_GFX *board_gfx_new() {
 static inline void board_backlight_on() {
     pinMode(PIN_LCD_BL, OUTPUT);
     digitalWrite(PIN_LCD_BL, HIGH);
+}
+
+// The TF slot is plain SPI: CS 10, MOSI 11, SCK 12, MISO 13 (F1ATB's pin
+// list). The display's QSPI holds the first SPI host, so the card gets HSPI.
+// Not confirmed on a board in hand.
+#define PIN_SD_CS         10
+#define PIN_SD_MOSI       11
+#define PIN_SD_SCK        12
+#define PIN_SD_MISO       13
+
+static inline bool board_sd_begin() {
+    static SPIClass sd_spi(HSPI);
+    sd_spi.begin(PIN_SD_SCK, PIN_SD_MISO, PIN_SD_MOSI, PIN_SD_CS);
+    return SD.begin(PIN_SD_CS, sd_spi, 20000000, "/sd");
 }
 
 #endif /* MM_BOARD_GUITION_JC3248W535_H */

@@ -38,8 +38,24 @@
 #define LV_DRAW_BUF_ALIGN           4
 #define LV_USE_DRAW_SW              1
 #define LV_DRAW_SW_SUPPORT_ARGB8888 1
+#define LV_DRAW_SW_SUPPORT_XRGB8888 1           /* the strips panel_bridge renders */
 #define LV_DRAW_SW_SUPPORT_RGB565   1
+#define LV_DRAW_SW_SUPPORT_RGB565A8 1           /* pictures with transparency */
 #define LV_DRAW_SW_DRAW_UNIT_CNT    1           /* one core to the picture */
+
+/* Pictures from the SD card. The board mounts the card at /sd (VFS, so SPI
+ * and SDMMC cards look the same) and "S:" is that mount through stdio. The
+ * scene is drawn strip by strip, so a decoded picture has to stay cached --
+ * otherwise it is read from the card again for every strip. The cache is a
+ * ceiling, not an allocation: a board without PSRAM should keep its pictures
+ * small rather than lower this. */
+#define LV_USE_FS_STDIO             1
+#define LV_FS_STDIO_LETTER          'S'
+#define LV_FS_STDIO_PATH            "/sd"
+#define LV_FS_STDIO_CACHE_SIZE      0
+#define LV_BIN_DECODER_RAM_LOAD     1
+#define LV_CACHE_DEF_SIZE           (1024 * 1024)
+#define LV_IMAGE_HEADER_CACHE_DEF_CNT 16
 
 /* The whole reason this project can draw a line that is half drawn. If this
  * does not build or does not fit, gate A4 in mementum-lcd's bring-up plan has failed and

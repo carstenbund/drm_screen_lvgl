@@ -69,4 +69,10 @@ static inline void board_backlight_on() {
     digitalWrite(PIN_LCD_BL, HIGH);
 }
 
+// The board has a TF slot, but its wiring has not been read off the
+// schematic yet. Until it is, no card: a scene's pictures report as missing.
+static inline bool board_sd_begin() {
+    return false;
+}
+
 #endif /* MM_BOARD_WAVESHARE_ESP32C6_LCD_13_H */

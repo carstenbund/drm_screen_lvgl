@@ -30,6 +30,9 @@ void setup() {
     }
     Serial.printf("scene: %dx%d panel, %.1f s\n",
                   panel_width(), panel_height(), panel_duration_ms() / 1000.0f);
+    if(panel_missing_assets() > 0) {
+        Serial.printf("pictures not drawn: %d (%s)\n", panel_missing_assets(), panel_error());
+    }
     panel_play(LOOP_SCENE);
 }
 

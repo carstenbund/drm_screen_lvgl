@@ -51,4 +51,10 @@ static inline void board_backlight_on() {
     digitalWrite(PIN_LCD_BL, HIGH);
 }
 
+// This family has a TF slot, but its pins are not confirmed for this board.
+// Until they are, no card: a scene's pictures report as missing.
+static inline bool board_sd_begin() {
+    return false;
+}
+
 #endif /* MM_BOARD_SUNTON_ESP32_3248S035_H */

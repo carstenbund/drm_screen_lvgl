@@ -43,4 +43,11 @@ static inline void board_backlight_on() {
     digitalWrite(PIN_LCD_BL, HIGH);
 }
 
+// TODO: mount this board's SD card at "/sd" -- SD.begin(cs, spi, freq, "/sd")
+// for an SPI slot, SD_MMC.setPins(...) then SD_MMC.begin("/sd") for SDMMC --
+// and return whether it worked. Return false for a board without a card.
+static inline bool board_sd_begin() {
+    return false;
+}
+
 #endif /* MM_BOARD_TEMPLATE_H */

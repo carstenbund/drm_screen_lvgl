@@ -1,5 +1,7 @@
 # What link.sh makes, named one by one: a *.h glob would also hide lv_conf.h
 # and the headers that belong here.
+assets_lvgl.c
+assets_lvgl.h
 cJSON.c
 cJSON.h
 easing.c
@@ -15,3 +17,6 @@ ripple.h
 scene_json.c
 scene_json.h
 scene_model.h
+
+# embed_scene.py writes pictures here, to copy onto the SD card.
+sd_card/

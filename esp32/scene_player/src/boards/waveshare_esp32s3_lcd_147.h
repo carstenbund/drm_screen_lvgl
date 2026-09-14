@@ -33,6 +33,7 @@
 #define MM_BOARD_WAVESHARE_ESP32S3_LCD_147_H
 
 #include <Arduino_GFX_Library.h>
+#include <SD_MMC.h>
 
 #define PIN_LCD_SCK       40
 #define PIN_LCD_MOSI      45
@@ -58,6 +59,14 @@ static inline Arduino_GFX *board_gfx_new() {
 static inline void board_backlight_on() {
     pinMode(PIN_LCD_BL, OUTPUT);
     digitalWrite(PIN_LCD_BL, HIGH);
+}
+
+// The TF slot is 4-bit SDMMC. Pins as a Waveshare example lists them for this
+// board family -- CLK 14, CMD 15, D0 16, D1 18, D2 17, D3 21 -- and not
+// confirmed for revision B.
+static inline bool board_sd_begin() {
+    if(!SD_MMC.setPins(14, 15, 16, 18, 17, 21)) return false;
+    return SD_MMC.begin("/sd", false /* 4-bit */);
 }
 
 #endif /* MM_BOARD_WAVESHARE_ESP32S3_LCD_147_H */

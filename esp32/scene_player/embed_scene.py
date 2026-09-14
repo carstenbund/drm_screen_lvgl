@@ -5,8 +5,14 @@
     python embed_scene.py scene.json     # a drm_scene_ir document, as is
 
 Screen-HTML becomes one whole-screen document (`drm_composer.emit_screen_json`):
-<box>, <text> and <path> from every layer, layers kept by z. <img> and
-<button> have no scene form and are refused, since the panel cannot draw them.
+<box>, <text>, <path> and <img> from every layer, layers kept by z. <button> has
+no scene form and is refused.
+
+Each <img> is fitted to its box and converted to LVGL's binary image format,
+written to sd_card/assets/<name>.bin: copy the contents of sd_card/ to the
+root of the panel's SD card. The scene names each picture and carries its size
+and CRC32, so a card from another build shows a missing picture, not a wrong
+one. Sources are read relative to the HTML file.
 
 Writes scene_embedded.h beside this script unless -o says otherwise. The
 header is committed, so the sketch builds without running this first.
@@ -21,15 +27,18 @@ HERE = pathlib.Path(__file__).resolve().parent
 DELIMITER = "panel_scene"
 
 
-def compile_source(path: pathlib.Path) -> bytes:
+def compile_source(path: pathlib.Path) -> tuple[bytes, dict]:
     if path.suffix.lower() == ".json":
-        return json.dumps(json.loads(path.read_text()), separators=(",", ":")).encode()
+        return json.dumps(json.loads(path.read_text()), separators=(",", ":")).encode(), {}
     try:
         from drm_composer import emit_screen_json, parse_scene
     except ImportError:
         sys.exit("screen-HTML needs drm_composer with emit_screen_json: "
                  "pip install -e ~/code/drm_composer")
-    return emit_screen_json(parse_scene(path.read_text()), name=path.stem)
+    assets: dict = {}
+    document = emit_screen_json(parse_scene(path.read_text()), name=path.stem,
+                                assets=assets, base_dir=path.resolve().parent)
+    return document, assets
 
 
 def header(document: bytes, source: pathlib.Path) -> str:
@@ -48,11 +57,21 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("source", type=pathlib.Path, help="screen-HTML or scene JSON")
     parser.add_argument("-o", "--out", type=pathlib.Path, default=HERE / "scene_embedded.h")
+    parser.add_argument("--card", type=pathlib.Path, default=HERE / "sd_card",
+                        help="where to write the SD card's assets/ folder")
     args = parser.parse_args()
 
-    document = compile_source(args.source)
+    document, assets = compile_source(args.source)
     args.out.write_text(header(document, args.source))
     print(f"{args.out}: {len(document)} bytes from {args.source}")
+
+    if assets:
+        folder = args.card / "assets"
+        folder.mkdir(parents=True, exist_ok=True)
+        for name, data in sorted(assets.items()):
+            (folder / name).write_bytes(data)
+            print(f"  {folder / name}: {len(data)} bytes")
+        print(f"copy the contents of {args.card} to the root of the SD card")
 
 
 if __name__ == "__main__":

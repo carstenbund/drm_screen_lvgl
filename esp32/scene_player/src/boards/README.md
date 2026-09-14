@@ -15,8 +15,9 @@ A board header must provide:
 | `PANEL_WIDTH`, `PANEL_HEIGHT` | `#define`, pixels, in the panel's natural (rotated) orientation |
 | `board_gfx_new()` | inline function returning a ready, `begin()`-able `Arduino_GFX *` — bus and display object both constructed |
 | `board_backlight_on()` | inline function that turns the backlight on (a GPIO write, PWM, or nothing, as the board needs) |
+| `board_sd_begin()` | inline function that mounts the SD card at `/sd` — `SD` for an SPI slot, `SD_MMC` for SDMMC — and returns whether it did. `false` for a board without a card, or whose card wiring is not confirmed |
 
-`panel_bridge.cpp` calls exactly these three names and nothing else from a
+`panel_bridge.cpp` calls exactly these four names and nothing else from a
 board header — no board's pin macros leak into the shared code, so two
 boards can define `PIN_LCD_CS` differently without colliding, and a board
 using a parallel RGB bus rather than SPI needs no changes outside its own

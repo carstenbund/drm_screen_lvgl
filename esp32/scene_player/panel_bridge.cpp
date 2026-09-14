@@ -2,13 +2,15 @@
 
 #include <Arduino.h>
 #include <lvgl.h>
+#include <lvgl_private.h>   // lv_image_cache_drop
 
 #include <math.h>
 #include <stdio.h>
 
-#include "board_config.h"   // PANEL_WIDTH/HEIGHT, board_gfx_new(), board_backlight_on()
+#include "board_config.h"   // PANEL_WIDTH/HEIGHT, board_gfx_new(), board_backlight_on(), board_sd_begin()
 
 extern "C" {
+#include "assets_lvgl.h"
 #include "evaluator.h"
 #include "geometry.h"
 #include "render_lvgl.h"
@@ -18,6 +20,16 @@ extern "C" {
 
 // LVGL sends the panel strips this many lines tall.
 static const int FLUSH_LINES = 40;
+
+// Where a scene's pictures are: the board mounts its SD card at /sd, and
+// lv_conf.h maps LVGL's "S:" onto it -- so S:/assets/logo.bin is
+// /sd/assets/logo.bin on the card.
+#ifndef PANEL_ASSET_ROOT
+#define PANEL_ASSET_ROOT "S:/assets/"
+#endif
+
+static bool sd_ready = false;
+static int missing_assets = 0;
 
 static Arduino_GFX *gfx = nullptr;
 static lv_display_t *display = nullptr;
@@ -78,6 +90,10 @@ bool panel_begin(void) {
     lv_init();
     lv_tick_set_cb(tick_ms);
 
+    // No card is not an error: a scene without pictures needs none, and one
+    // with pictures reports them as missing when it loads.
+    sd_ready = board_sd_begin();
+
     board_backlight_on();
     gfx = board_gfx_new();
     if(!gfx->begin()) {
@@ -119,6 +135,16 @@ bool panel_load_scene(const char *scene_json) {
     playing = false;
     scene_generation++;
     scene_ready = mm_scene_from_json(scene_json, &scene, error_text, sizeof(error_text));
+    missing_assets = 0;
+    if(scene_ready) {
+        // A decoded picture stays in LVGL's cache under its path; a new scene
+        // may name a file that has since been replaced on the card.
+        lv_image_cache_drop(NULL);
+        missing_assets = mm_scene_load_assets(&scene, PANEL_ASSET_ROOT, error_text, sizeof(error_text));
+        if(missing_assets > 0 && !sd_ready) {
+            snprintf(error_text, sizeof(error_text), "no SD card: %d picture(s) not drawn", missing_assets);
+        }
+    }
     if(scene_obj != nullptr) lv_obj_invalidate(scene_obj);   // the glass shows what is loaded
     return scene_ready;
 }
@@ -158,6 +184,10 @@ void panel_update(void) {
         panel_draw(scene_time);
     }
     lv_timer_handler();
+}
+
+int panel_missing_assets(void) {
+    return missing_assets;
 }
 
 int panel_width(void) {

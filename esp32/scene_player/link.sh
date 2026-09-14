@@ -11,7 +11,7 @@ cjson="$MEMENTUM_SRC/third_party/cJSON"
 [ -d "$player" ] || { echo "no player at $player -- set MEMENTUM_SRC to a mementum-lcd checkout" >&2; exit 1; }
 [ -f "$cjson/cJSON.c" ] || { echo "cJSON not fetched: run $MEMENTUM_SRC/poc/host-player/fetch-cjson.sh" >&2; exit 1; }
 
-for source in easing evaluator geometry ripple scene_json render_lvgl; do
+for source in assets_lvgl easing evaluator geometry ripple scene_json render_lvgl; do
     ln -sf "$player/$source.c" "$here/$source.c"
     ln -sf "$player/$source.h" "$here/$source.h"
 done
