@@ -120,4 +120,4 @@ board. Not part of the Python package.
 ## License
 
 **GPL-3.0-or-later**, matching `drm_screen`. For proprietary use that cannot
-comply with the GPL, contact Carsten Bund <carstenbund@gmail.com>.
+comply with the GPL, contact Carsten Bund via GitHub (https://github.com/carstenbund).
